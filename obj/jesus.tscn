@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpglju7ctnrdm"]
+
+[ext_resource type="PackedScene" uid="uid://bxeiiilldpf86" path="res://import/jesus.glb" id="1_cu1y8"]
+
+[node name="jesus" type="Node3D"]
+
+[node name="jesus" parent="." instance=ExtResource("1_cu1y8")]
+transform = Transform3D(-0.45, 0, -6.79481e-08, 0, 0.45, 0, 6.79481e-08, 0, -0.45, 0, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.131172, 2.41445, 0.454521)
+light_color = Color(1, 1, 0.917647, 1)
+light_energy = 4.1
+omni_range = 6.145

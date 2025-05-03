@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://bcnlc62xyd3hh"]
+
+[ext_resource type="PackedScene" uid="uid://bqlw70x04m7nh" path="res://import/boat.glb" id="1_6ie0a"]
+[ext_resource type="Script" path="res://obj/boat.gd" id="1_xq1pl"]
+[ext_resource type="PackedScene" uid="uid://cpglju7ctnrdm" path="res://obj/jesus.tscn" id="4_5rv2q"]
+[ext_resource type="PackedScene" uid="uid://drunlmvg1jf1d" path="res://obj/water.tscn" id="4_nmte4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lydrp"]
+size = Vector3(1.687, 0.488273, 6.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h3s3n"]
+size = Vector3(2.08081, 1.42859, 0.494436)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xq8cx"]
+size = Vector3(2.08081, 1.42859, 0.494436)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iqxl6"]
+size = Vector3(0.56189, 1.42859, 4.89045)
+
+[node name="boat" type="RigidBody3D"]
+gravity_scale = 0.0
+angular_damp = 100.0
+script = ExtResource("1_xq1pl")
+
+[node name="boat" parent="." instance=ExtResource("1_6ie0a")]
+transform = Transform3D(1, 0, 0, 0, 0.77, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.04554, 0)
+shape = SubResource("BoxShape3D_lydrp")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0487061, -0.0442501, 2.79996)
+shape = SubResource("BoxShape3D_h3s3n")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0487061, -0.0442501, -2.73369)
+shape = SubResource("BoxShape3D_xq8cx")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.808167, -0.0442501, -0.100607)
+shape = SubResource("BoxShape3D_iqxl6")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.84429, -0.0442501, -0.100607)
+shape = SubResource("BoxShape3D_iqxl6")
+
+[node name="jesus" parent="." instance=ExtResource("4_5rv2q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.555, -2.19921)
+
+[node name="water" parent="." instance=ExtResource("4_nmte4")]

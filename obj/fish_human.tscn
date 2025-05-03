@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://c67dtygjkx5ay"]
+
+[ext_resource type="Material" uid="uid://b6xdjg4ty42nf" path="res://native/fish_man_underwater.tres" id="1_aeyx1"]
+[ext_resource type="Script" path="res://obj/fish_human.gd" id="1_jma43"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_od3g7"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_pdo07"]
+size = Vector3(1.14, 1.09, 0.05)
+
+[sub_resource type="PrismMesh" id="PrismMesh_64h5t"]
+size = Vector3(0.525, 1.09, 0.05)
+
+[node name="fish_human" type="Area3D"]
+script = ExtResource("1_jma43")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, -0.0801001, 0, 0.0765244)
+shape = SubResource("CapsuleShape3D_od3g7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -4.37114e-08, 4.37114e-08, 4.37114e-08, -4.37114e-08, 1, -4.37114e-08, 1, 4.37114e-08, -0.0801001, 0, 0.700003)
+material_override = ExtResource("1_aeyx1")
+mesh = SubResource("PrismMesh_pdo07")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 1.31134e-07, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, 1.31134e-07, -1, -4.37114e-08, 0.22767, 0, -0.391839)
+material_override = ExtResource("1_aeyx1")
+mesh = SubResource("PrismMesh_64h5t")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 1.31134e-07, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, 1.31134e-07, -1, -4.37114e-08, -0.380719, 0, -0.391839)
+material_override = ExtResource("1_aeyx1")
+mesh = SubResource("PrismMesh_64h5t")

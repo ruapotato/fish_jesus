@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://drunlmvg1jf1d"]
+
+[ext_resource type="PackedScene" uid="uid://bv0ssm48al1gi" path="res://import/water.glb" id="1_xtamb"]
+[ext_resource type="Shader" path="res://native/water.gdshader" id="2_u1hun"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ut3ce"]
+render_priority = 0
+shader = ExtResource("2_u1hun")
+shader_parameter/water_color = Color(0.1, 0.3, 0.5, 0.8)
+shader_parameter/normal_scale = 1.78
+shader_parameter/normal_speed = 1.546
+shader_parameter/normal_strength = 0.5
+shader_parameter/roughness = 0.225
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yu2ah"]
+size = Vector3(200, 97.6645, 200)
+
+[node name="water" type="Node3D"]
+
+[node name="water2" parent="." instance=ExtResource("1_xtamb")]
+
+[node name="water" parent="water2" index="0"]
+transform = Transform3D(-132.01, 0, 0, 0, 132.01, -5.14066e-05, 0, 5.14066e-05, 132.01, 0, -0.430099, 0)
+surface_material_override/0 = SubResource("ShaderMaterial_ut3ce")
+
+[node name="water_body" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="water_body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -49.4084, 0)
+shape = SubResource("BoxShape3D_yu2ah")
+
+[editable path="water2"]

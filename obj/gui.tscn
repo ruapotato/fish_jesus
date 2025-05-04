@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7lhknrgpgm4v"]
+[gd_scene load_steps=8 format=3 uid="uid://b7lhknrgpgm4v"]
+
+[ext_resource type="Script" path="res://obj/gui.gd" id="1_w0hj3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_580g4"]
 line_spacing = 7.66
@@ -10,20 +12,87 @@ line_spacing = 7.66
 font_size = 46
 font_color = Color(1, 1, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_k5o4n"]
+line_spacing = 7.66
+font_size = 46
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_vyn3y"]
+font_size = 41
+
+[sub_resource type="LabelSettings" id="LabelSettings_5mctn"]
+font_size = 41
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1l031"]
+font_size = 41
+font_color = Color(1, 1, 0, 1)
+
 [node name="gui" type="Node2D"]
+script = ExtResource("1_w0hj3")
 
 [node name="bad_count" type="Label" parent="."]
-offset_left = 14.0
-offset_top = -3.0
-offset_right = 54.0
-offset_bottom = 61.0
+offset_left = 120.0
+offset_top = 2.0
+offset_right = 160.0
+offset_bottom = 66.0
 text = "0"
 label_settings = SubResource("LabelSettings_580g4")
 
 [node name="good_count" type="Label" parent="."]
-offset_left = 14.0
-offset_top = 61.0
-offset_right = 54.0
-offset_bottom = 125.0
+offset_left = 121.0
+offset_top = 62.0
+offset_right = 161.0
+offset_bottom = 126.0
 text = "0"
 label_settings = SubResource("LabelSettings_h6u2f")
+
+[node name="karma_count" type="Label" parent="."]
+offset_left = 343.0
+offset_top = 2.0
+offset_right = 383.0
+offset_bottom = 66.0
+text = "0"
+label_settings = SubResource("LabelSettings_k5o4n")
+
+[node name="power_label_na" type="Label" parent="."]
+offset_left = 200.0
+offset_top = 4.0
+offset_right = 346.0
+offset_bottom = 61.0
+text = "Power:"
+label_settings = SubResource("LabelSettings_vyn3y")
+
+[node name="power_label_bad" type="Label" parent="."]
+offset_left = 200.0
+offset_top = 4.0
+offset_right = 346.0
+offset_bottom = 61.0
+text = "Power:"
+label_settings = SubResource("LabelSettings_5mctn")
+
+[node name="power_label_good" type="Label" parent="."]
+offset_left = 200.0
+offset_top = 4.0
+offset_right = 346.0
+offset_bottom = 61.0
+text = "Power:"
+label_settings = SubResource("LabelSettings_1l031")
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 35.0
+offset_top = 6.0
+offset_right = 125.0
+offset_bottom = 63.0
+text = "Evil: "
+label_settings = SubResource("LabelSettings_vyn3y")
+
+[node name="Label3" type="Label" parent="."]
+offset_top = 67.0
+offset_right = 90.0
+offset_bottom = 124.0
+text = "Good:"
+label_settings = SubResource("LabelSettings_vyn3y")
+
+[connection signal="draw" from="bad_count" to="." method="_on_bad_count_draw"]
+[connection signal="draw" from="good_count" to="." method="_on_good_count_draw"]

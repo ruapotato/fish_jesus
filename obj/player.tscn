@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cuhvon033nahn"]
+[gd_scene load_steps=15 format=3 uid="uid://cuhvon033nahn"]
 
 [ext_resource type="Script" path="res://obj/player.gd" id="1_qhsfs"]
 [ext_resource type="PackedScene" uid="uid://cnnmm1r6j7njs" path="res://import/fishman.glb" id="2_8ra35"]
-[ext_resource type="PackedScene" uid="uid://1do7sxgqgjr5" path="res://import/pull.glb" id="3_okuhs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dkxbv"]
 radius = 0.33
@@ -22,6 +21,44 @@ alpha_antialiasing_mode = 0
 albedo_color = Color(0.721569, 0.486275, 0, 0.34902)
 metallic = 1.0
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7fqbs"]
+animation = &"pole"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_nldgm"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8w0xo"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_gkxts"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:arm1.l", "Armature/Skeleton3D:arm2.l", "Armature/Skeleton3D:arm3.l"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g3t31"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2f6o6"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_op7qk"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_g3t31")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_2f6o6")
+blend_point_1/pos = 1.0
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pnrlt"]
+graph_offset = Vector2(-347, 121)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_7fqbs")
+nodes/Animation/position = Vector2(-280, 300)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_8w0xo")
+nodes/TimeScale/position = Vector2(-40, 120)
+"nodes/TimeScale 2/node" = SubResource("AnimationNodeTimeScale_nldgm")
+"nodes/TimeScale 2/position" = Vector2(-40, 280)
+nodes/output/position = Vector2(420, 60)
+nodes/pole/node = SubResource("AnimationNodeOneShot_gkxts")
+nodes/pole/position = Vector2(260, 160)
+nodes/walk_speed/node = SubResource("AnimationNodeBlendSpace1D_op7qk")
+nodes/walk_speed/position = Vector2(-280, 100)
+node_connections = [&"TimeScale", 0, &"walk_speed", &"TimeScale 2", 0, &"Animation", &"output", 0, &"pole", &"pole", 0, &"TimeScale", &"pole", 1, &"TimeScale 2"]
+
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_qhsfs")
 
@@ -38,16 +75,42 @@ current = true
 shape = SubResource("CapsuleShape3D_dkxbv")
 
 [node name="fishman" parent="." instance=ExtResource("2_8ra35")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.676275, 0)
+
+[node name="Armature" parent="fishman" index="0"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="fishman/Armature" index="0"]
+bones/0/position = Vector3(-0.00474479, 0.507618, -0.00295219)
+bones/1/rotation = Quaternion(0.914813, 8.33592e-08, 2.66488e-07, 0.403878)
+bones/2/rotation = Quaternion(0.285956, -8.25507e-08, 1.367e-07, 0.958243)
+bones/3/rotation = Quaternion(-0.0208796, 5.18525e-08, -9.26562e-09, 0.999782)
+bones/4/rotation = Quaternion(0.847466, 0.0139763, 0.442014, 0.293649)
+bones/5/rotation = Quaternion(0.366074, 3.9895e-09, 1.28312e-09, 0.930586)
+bones/6/rotation = Quaternion(-0.413568, -0.234285, 0.642809, 0.600723)
+bones/7/rotation = Quaternion(2.14304e-07, -0.4061, 0.913829, -1.00015e-07)
+bones/9/rotation = Quaternion(-0.0208797, -5.18524e-08, 9.26558e-09, 0.999782)
+bones/10/rotation = Quaternion(0.44748, -0.292181, 0.845137, -0.0116052)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/rotation = Quaternion(0.37196, -5.01403e-09, -2.49835e-08, 0.928249)
+bones/12/rotation = Quaternion(-0.421136, 0.234632, -0.641641, 0.596565)
+bones/13/position = Vector3(0.42938, 0.292563, 0.352703)
+bones/14/position = Vector3(0.236235, 0.033354, -0.00295651)
+bones/14/rotation = Quaternion(0.0659801, 0.719335, -0.0689777, -0.688074)
+bones/15/position = Vector3(-0.42938, 0.292563, 0.352703)
+bones/16/position = Vector3(-0.242257, 0.033354, -0.00295651)
+bones/16/rotation = Quaternion(-0.0659801, 0.719335, -0.0689777, 0.688074)
+
+[node name="HandAttachment3D" type="BoneAttachment3D" parent="fishman/Armature/Skeleton3D" index="1"]
+transform = Transform3D(5.14571e-07, 0.289072, -0.957307, 9.41362e-08, -0.957307, -0.289072, -1, 5.86311e-08, -5.19815e-07, 0.415376, 0.627985, -0.00295217)
+bone_name = "arm3.l"
+bone_idx = 3
+
+[node name="shoot_from" type="Node3D" parent="fishman/Armature/Skeleton3D/HandAttachment3D"]
+transform = Transform3D(-0.913545, -0.406737, -7.72574e-07, 0.403487, -0.906249, -0.126144, 0.0513068, -0.11524, 0.992013, -0.712594, -0.431116, -0.170359)
 
 [node name="pull_piv" type="Node3D" parent="fishman"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.07634e-08, 0, -0.475011)
-
-[node name="pull" parent="fishman/pull_piv" instance=ExtResource("3_okuhs")]
-transform = Transform3D(-0.088034, 0.197727, 0.976296, -0.397095, 0.891891, -0.21644, -0.913545, -0.406737, -4.26753e-08, -0.95, 0.28, -0.044)
-
-[node name="shoot_from" type="Node3D" parent="fishman/pull_piv/pull"]
-transform = Transform3D(1, 5.96046e-08, 1.13193e-07, 1.19209e-07, 1, 1.21638e-07, 3.40323e-08, -3.12673e-07, 1, 0.00272766, 0.919132, 0.946229)
 
 [node name="AudioListener3D" type="AudioListener3D" parent="fishman"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.591773, 0)
@@ -60,3 +123,16 @@ shape = SubResource("SphereShape3D_vexw0")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="target"]
 mesh = SubResource("SphereMesh_t7lqe")
 surface_material_override/0 = SubResource("StandardMaterial3D_7rvp0")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../fishman")
+tree_root = SubResource("AnimationNodeBlendTree_pnrlt")
+anim_player = NodePath("../fishman/AnimationPlayer")
+parameters/TimeScale/scale = 3.0
+"parameters/TimeScale 2/scale" = 5.0
+parameters/pole/active = false
+parameters/pole/internal_active = false
+parameters/pole/request = 0
+parameters/walk_speed/blend_position = -1.0
+
+[editable path="fishman"]

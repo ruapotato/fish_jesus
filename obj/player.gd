@@ -30,8 +30,9 @@ const CHUCKABLE_SCENE = preload("res://obj/chuckable.tscn")
 @onready var cam_arm: SpringArm3D = $piv/SpringArm3D # The node that rotates vertically (up/down) and controls zoom distance
 @onready var cam: Camera3D = $piv/SpringArm3D/Camera3D # The actual camera node
 @onready var target: Node3D = $target # The Area3D used as the fishing target (or a MeshInstance, Sprite3D, etc.)
-@onready var hand: Node3D = $fishman/pull_piv
-@onready var shoot_from = $fishman/pull_piv/pull/shoot_from # The point from where the object is thrown
+@onready var hand = $fishman/Armature/Skeleton3D/HandAttachment3D
+@onready var shoot_from = $fishman/Armature/Skeleton3D/HandAttachment3D/shoot_from # The point from where the object is thrown
+@onready var animationTree = $AnimationTree
 
 # Movement constants
 const SPEED: float = 5.0
@@ -81,25 +82,43 @@ func _physics_process(delta: float) -> void:
 
 	# --- Movement ---
 	var input_dir := Input.get_vector("left", "right", "forward", "backward")
+	# Calculate direction relative to camera pivot
 	var direction := (cam_piv.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
+	# Check if there is movement input
 	if direction:
+		# Apply movement velocity
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
+
+		# Rotate the mesh to face the movement direction
 		var target_basis := Basis.looking_at(direction, Vector3.UP)
 		# Apply correction if mesh isn't facing +Z by default
 		# Check your mesh orientation. Remove or adjust PI/2.0 if needed.
 		target_basis = target_basis.rotated(Vector3.UP, -PI/2.0)
 		mesh.basis = mesh.basis.slerp(target_basis, rotation_speed * delta)
+
+		# ---- NEW: Set AnimationTree Blend ----
+		# Set blend position to 1 when moving
+		if animationTree: # Check if animationTree is valid
+			animationTree.set("parameters/walk_speed/blend_position", 1.0)
+		# --------------------------------------
+
 	else:
+		# Apply deceleration when there's no input
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+		# ---- NEW: Set AnimationTree Blend ----
+		# Set blend position to -1 when not moving (or stopping)
+		if animationTree: # Check if animationTree is valid
+			animationTree.set("parameters/walk_speed/blend_position", -1.0)
+		# --------------------------------------
 
 	# --- Update Target Position ---
 	update_target_position() # <-- CALLS THE MODIFIED FUNCTION
 
 	# --- Throwing ---
-	# Check if the "chuck" action was just pressed
 	if Input.is_action_just_pressed("chuck"):
 		chuck_object() # Call the function to handle throwing
 
@@ -166,7 +185,7 @@ func update_target_position() -> void:
 
 
 func chuck_object() -> void:
-
+	animationTree.set("parameters/pole/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	# Instantiate the chuckable scene
 	var chuckable_node = CHUCKABLE_SCENE.instantiate()
 

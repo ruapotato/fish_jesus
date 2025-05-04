@@ -15,3 +15,13 @@ func _on_video_stream_player_finished() -> void:
 	var new_game = game.instantiate()
 	add_child(new_game)
 	visible = false
+
+
+
+func _on_audio_stream_player_finished() -> void:
+	$music.play()
+
+
+func _on_button_pressed() -> void:
+	$VideoStreamPlayer.stop()
+	_on_video_stream_player_finished()

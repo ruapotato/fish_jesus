@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
+var speed = 5.0
 const ACCELERATION = 10.0 # For stopping if player disappears
 # Epsilon threshold to prevent rotation jitter when almost stopped
 const MIN_MOVE_SPEED_SQR = 0.01 # Square of minimum speed to trigger rotation
@@ -14,8 +14,15 @@ var root
 var run_time = 5
 # --- Engine Functions ---
 
+func get_root():
+	var test = get_parent()
+	while test.name != "root":
+		test = test.get_parent()
+	return(test)
+
 func _ready() -> void:
-	root = get_parent().get_parent()
+	root = get_root()
+	print(root.name)
 	# --- Get Player Node ---
 	# Attempt to find player recursively under the parent
 	player = root.find_child("player", true, false)
@@ -24,7 +31,7 @@ func _physics_process(delta: float) -> void:
 	run_time -= delta
 	if run_time < 0:
 		root._spawn_fish_human(global_position.x, global_position.z)
-		queue_free()
+		hit()
 
 
 	# 1. Apply Gravity
@@ -38,12 +45,12 @@ func _physics_process(delta: float) -> void:
 	# 3. Set horizontal velocity based on direction
 	if direction_away.length_squared() > 0.001: # Check length before normalizing
 		direction_away = direction_away.normalized()
-		velocity.x = direction_away.x * SPEED
-		velocity.z = direction_away.z * SPEED
+		velocity.x = direction_away.x * speed
+		velocity.z = direction_away.z * speed
 	else:
-		# Stop horizontal movement (using SPEED for a quick stop like original)
-		velocity.x = move_toward(velocity.x, 0, SPEED * delta) # Corrected: use delta with move_toward
-		velocity.z = move_toward(velocity.z, 0, SPEED * delta) # Corrected: use delta with move_toward
+		# Stop horizontal movement (using speed for a quick stop like original)
+		velocity.x = move_toward(velocity.x, 0, speed * delta) # Corrected: use delta with move_toward
+		velocity.z = move_toward(velocity.z, 0, speed * delta) # Corrected: use delta with move_toward
 
 	# 4. Apply the final velocity
 	move_and_slide()
@@ -75,4 +82,19 @@ func _physics_process(delta: float) -> void:
 
 func hit():
 	print("I'm Dead!")
+	if self in root.exclude:
+		root.exclude.erase(self)
 	queue_free()
+
+func im_saved():
+	root.good_counter.text = str(int(root.good_counter.text) + 1)
+	speed = 0
+	$saved.play()
+
+
+func _on_audio_stream_player_3d_finished() -> void:
+	$AudioStreamPlayer3D.play()
+
+
+func _on_saved_finished() -> void:
+	hit()

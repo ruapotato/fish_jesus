@@ -11,12 +11,21 @@ const HUMAN_SCENE = preload("res://obj/human.tscn")
 var water_plane: Node3D = null
 
 var root
+var boat
 
 # Optional: Reference to the visual mesh if you need to rotate it
 # @onready var mesh: Node3D = $MeshInstance3D # Adjust path as needed
 
+
+func get_root():
+	var test = get_parent()
+	while test.name != "root":
+		test = test.get_parent()
+	return(test)
+
 func _ready() -> void:
-	root = get_parent()
+	root = get_root()
+	boat = root.find_child("boat")
 	# It's often safer to wait one frame to ensure the node is fully
 	# initialized and positioned within the scene tree by the spawner.
 	await get_tree().process_frame
@@ -91,7 +100,8 @@ func hit():
 	print("FISH HIT")
 	var human_node = HUMAN_SCENE.instantiate()
 	human_node.set_deferred("global_position", global_position + Vector3(0,.1,0))
-	root.add_child(human_node)
+	root.exclude.append(human_node)
+	boat.add_child(human_node)
 	queue_free()
 	
 	

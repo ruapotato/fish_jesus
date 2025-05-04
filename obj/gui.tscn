@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7lhknrgpgm4v"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_580g4"]
+line_spacing = 7.66
+font_size = 46
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_h6u2f"]
+line_spacing = 7.66
+font_size = 46
+font_color = Color(1, 1, 0, 1)
+
+[node name="gui" type="Node2D"]
+
+[node name="bad_count" type="Label" parent="."]
+offset_left = 14.0
+offset_top = -3.0
+offset_right = 54.0
+offset_bottom = 61.0
+text = "0"
+label_settings = SubResource("LabelSettings_580g4")
+
+[node name="good_count" type="Label" parent="."]
+offset_left = 14.0
+offset_top = 61.0
+offset_right = 54.0
+offset_bottom = 125.0
+text = "0"
+label_settings = SubResource("LabelSettings_h6u2f")

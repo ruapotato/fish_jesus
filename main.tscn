@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://jkp6nkdv4ccw"]
+[gd_scene load_steps=12 format=3 uid="uid://jkp6nkdv4ccw"]
 
 [ext_resource type="PackedScene" uid="uid://bcnlc62xyd3hh" path="res://obj/boat.tscn" id="1_fd1xj"]
 [ext_resource type="Script" path="res://main.gd" id="1_kdgvm"]
 [ext_resource type="PackedScene" uid="uid://cuhvon033nahn" path="res://obj/player.tscn" id="3_6bqv2"]
+[ext_resource type="PackedScene" uid="uid://cpglju7ctnrdm" path="res://obj/jesus.tscn" id="4_85q6n"]
+[ext_resource type="PackedScene" uid="uid://b7lhknrgpgm4v" path="res://obj/gui.tscn" id="5_5cm1w"]
 
 [sub_resource type="Gradient" id="Gradient_p8v8l"]
 offsets = PackedFloat32Array(0.433962, 0.679245)
@@ -52,3 +54,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.743915, 2.00479)
 [node name="boat" parent="." instance=ExtResource("1_fd1xj")]
 
 [node name="SpawnTimer" type="Timer" parent="."]
+
+[node name="jesus" parent="." instance=ExtResource("4_85q6n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.555, -6.52073)
+
+[node name="gui" parent="." instance=ExtResource("5_5cm1w")]

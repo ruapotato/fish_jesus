@@ -40,9 +40,15 @@ var root
 var boat
 var water_body
 
+
+func get_root():
+	var test = get_parent()
+	while test.name != "root":
+		test = test.get_parent()
+	return(test)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	root = get_parent()
+	root = get_root()
 	boat = root.find_child("boat")
 	water_body = root.find_child("water").find_child("water_body")
 	# Hide and capture the mouse cursor to enable camera control
@@ -138,7 +144,7 @@ func update_target_position() -> void:
 	# Create physics query parameters
 	var query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 	# Exclude the player character itself so the ray doesn't hit it
-	query.exclude = [self, root, boat]
+	query.exclude = [self, root, boat, target] + root.exclude
 	# Optional: You could set a collision_mask here to only hit certain physics layers
 	# query.collision_mask = 1 # Example: only hit layer 1
 

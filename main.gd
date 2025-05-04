@@ -22,12 +22,17 @@ extends Node3D
 
 # Timer node for controlling spawn rate
 @onready var spawn_timer: Timer = $SpawnTimer # Make sure you add a Timer node named "SpawnTimer" as a child!
-
+@onready var gui = $gui
 # Group name for easy identification of spawned fish
 const FISH_HUMAN_GROUP = "fish_humans"
+var exclude = []
+var good_counter
+var bad_counter
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	good_counter = gui.find_child("good_count")
+	bad_counter = gui.find_child("bad_count")
 	# --- Setup Spawn Timer ---
 
 	# Configure the timer

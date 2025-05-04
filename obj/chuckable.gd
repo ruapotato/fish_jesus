@@ -34,6 +34,14 @@ var cumulative_distances: PackedFloat32Array = []
 # --- Optional: Collision ---
 signal hit_something(body_or_area)
 
+var root
+
+func get_root():
+	var test = get_parent()
+	while test.name != "root":
+		test = test.get_parent()
+	return(test)
+	
 # --- Initialization Function (called by Player) ---
 # Sets up the path, pre-calculates arc length, and starts the movement
 func launch(p_start_pos: Vector3, p_target_pos: Vector3) -> void:
@@ -150,6 +158,7 @@ func _get_bezier_point(t: float) -> Vector3:
 
 
 func _ready():
+	root = get_root()
 	body_entered.connect(_on_body_entered)
 	area_entered.connect(_on_area_entered)
 
@@ -222,6 +231,7 @@ func bite():
 
 func splash_here():
 	if not has_splashed:
+		$splash_sound.play()
 		print("SPLASH")
 		splash.emitting = true
 		splash_down = global_position
@@ -231,13 +241,15 @@ func splash_here():
 func kill_here():
 	if not has_splashed:
 		print("SPLASH")
+		$pop_sound.play()
 		kill_splash.emitting = true
 		splash_down = global_position
 		has_splashed = true
+		root.bad_counter.text = str(int(root.bad_counter.text) + 1)
 		bite()
 
 func _on_area_entered(area: Area3D) -> void:
-	if area.name == "kill_zone":
+	if area.name == "kill_zone" or area.name == "target":
 		return
 	if not is_moving: return
 	print("Chuckable Area hit Area during arc: %s" % area.name)

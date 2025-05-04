@@ -37,11 +37,13 @@ const CHUCKABLE_SCENE = preload("res://obj/chuckable.tscn")
 const SPEED: float = 5.0
 const JUMP_VELOCITY: float = 6
 var root
+var boat
 var water_body
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	root = get_parent()
+	boat = root.find_child("boat")
 	water_body = root.find_child("water").find_child("water_body")
 	# Hide and capture the mouse cursor to enable camera control
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -136,7 +138,7 @@ func update_target_position() -> void:
 	# Create physics query parameters
 	var query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
 	# Exclude the player character itself so the ray doesn't hit it
-	query.exclude = [self]
+	query.exclude = [self, root, boat]
 	# Optional: You could set a collision_mask here to only hit certain physics layers
 	# query.collision_mask = 1 # Example: only hit layer 1
 

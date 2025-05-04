@@ -3,6 +3,8 @@ extends Area3D
 
 
 @onready var splash = $splash
+@onready var kill_splash = $kill_splash
+
 @onready var kill_zone = $kill_zone
 # --- Path Definition Variables ---
 # These define the *shape* of the curve, not the timing anymore
@@ -162,7 +164,7 @@ func _physics_process(delta: float) -> void:
 	elapsed_distance += speed * delta
 
 	# --- Check if we reached or passed the target distance ---
-	if elapsed_distance >= total_arc_length and splash.emitting == false:
+	if elapsed_distance >= total_arc_length and (splash.emitting == false and kill_splash.emitting == false):
 		if not splash_down:
 			splash_here()
 			return
@@ -205,9 +207,10 @@ func _physics_process(delta: float) -> void:
 # --- Optional: Collision/Overlap Handling ---
 # These still work as the Area3D moves through space
 func _on_body_entered(body: Node3D) -> void:
-	if not is_moving: return # Ignore collisions after reaching target
-	print("Chuckable Area hit Body during arc: %s" % body.name)
-	emit_signal("hit_something", body)
+	if not has_splashed:
+		if "hit" in body:
+			body.hit()
+			kill_here()
 	# Optional: Destroy immediately on hit, even before reaching target
 	# queue_free()
 	# is_moving = false # Stop moving if you free it
@@ -221,6 +224,14 @@ func splash_here():
 	if not has_splashed:
 		print("SPLASH")
 		splash.emitting = true
+		splash_down = global_position
+		has_splashed = true
+		bite()
+
+func kill_here():
+	if not has_splashed:
+		print("SPLASH")
+		kill_splash.emitting = true
 		splash_down = global_position
 		has_splashed = true
 		bite()

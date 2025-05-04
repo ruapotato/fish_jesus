@@ -11,7 +11,7 @@ var player: Node3D = null
 @onready var mesh = $Humanoid # Assuming Humanoid is a MeshInstance3D
 
 var root
-var run_time = 2
+var run_time = 5
 # --- Engine Functions ---
 
 func _ready() -> void:
@@ -72,3 +72,7 @@ func _physics_process(delta: float) -> void:
 
 		# Example: If mesh's forward is +Z (appears rotated 180deg after look_at):
 		# mesh.rotate_y(deg_to_rad(180))
+
+func hit():
+	print("I'm Dead!")
+	queue_free()

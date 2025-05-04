@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bqlw5awm4xtll"]
+[gd_scene load_steps=13 format=3 uid="uid://bqlw5awm4xtll"]
 
 [ext_resource type="Script" path="res://obj/chuckable.gd" id="1_mnyqw"]
 [ext_resource type="Material" uid="uid://c3oidyx0vsp4t" path="res://water.tres" id="2_qfxce"]
@@ -9,6 +9,17 @@ radius = 0.2
 [sub_resource type="SphereMesh" id="SphereMesh_jb7ff"]
 radius = 0.1
 height = 0.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_0g1hr"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x3ysp"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ejbm8"]
+albedo_color = Color(1, 0, 0, 1)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f61wi"]
 direction = Vector3(0, 1, 0)
@@ -21,6 +32,14 @@ radial_velocity_max = 45.97
 
 [sub_resource type="SphereMesh" id="SphereMesh_1g25n"]
 material = ExtResource("2_qfxce")
+radius = 0.165
+height = 0.305
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6bv7r"]
+albedo_color = Color(1, 0.321569, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gie0h"]
+material = SubResource("StandardMaterial3D_6bv7r")
 radius = 0.25
 height = 0.5
 
@@ -37,13 +56,31 @@ shape = SubResource("SphereShape3D_v6tkn")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_jb7ff")
 
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0826809, 0)
+mesh = SubResource("CylinderMesh_0g1hr")
+surface_material_override/0 = SubResource("StandardMaterial3D_x3ysp")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0063661, 0)
+mesh = SubResource("SphereMesh_jb7ff")
+surface_material_override/0 = SubResource("StandardMaterial3D_ejbm8")
+
 [node name="splash" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 15
+one_shot = true
+explosiveness = 0.82
+process_material = SubResource("ParticleProcessMaterial_f61wi")
+draw_pass_1 = SubResource("SphereMesh_1g25n")
+
+[node name="kill_splash" type="GPUParticles3D" parent="."]
 emitting = false
 amount = 50
 one_shot = true
 explosiveness = 0.82
 process_material = SubResource("ParticleProcessMaterial_f61wi")
-draw_pass_1 = SubResource("SphereMesh_1g25n")
+draw_pass_1 = SubResource("SphereMesh_gie0h")
 
 [node name="kill_zone" type="Area3D" parent="."]
 
@@ -52,3 +89,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.51373, 0)
 shape = SubResource("CylinderShape3D_7wxbb")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

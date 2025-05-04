@@ -3,6 +3,7 @@ extends Area3D
 
 
 @onready var splash = $splash
+@onready var kill_zone = $kill_zone
 # --- Path Definition Variables ---
 # These define the *shape* of the curve, not the timing anymore
 var start_position: Vector3 = Vector3.ZERO
@@ -211,18 +212,27 @@ func _on_body_entered(body: Node3D) -> void:
 	# queue_free()
 	# is_moving = false # Stop moving if you free it
 
+func bite():
+	for killable in kill_zone.get_overlapping_areas():
+		if "hit" in killable:
+			killable.hit()
+
 func splash_here():
 	if not has_splashed:
 		print("SPLASH")
 		splash.emitting = true
 		splash_down = global_position
 		has_splashed = true
+		bite()
 
 func _on_area_entered(area: Area3D) -> void:
+	if area.name == "kill_zone":
+		return
 	if not is_moving: return
 	print("Chuckable Area hit Area during arc: %s" % area.name)
 	emit_signal("hit_something", area)
 	splash_here()
+	
 	# Optional: Destroy immediately on hit
 	# queue_free()
 	# is_moving = false # Stop moving if you free it

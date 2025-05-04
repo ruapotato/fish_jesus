@@ -48,11 +48,12 @@ func _process(delta: float) -> void:
 
 # Function called when the SpawnTimer times out
 func _on_spawn_timer_timeout() -> void:
-	_spawn_fish_human()
+	var random_x = randf_range(-spawn_x_range, spawn_x_range)
+	_spawn_fish_human(random_x, spawn_z_position)
 
 
 # Function to handle the creation and setup of a single fish human
-func _spawn_fish_human() -> void:
+func _spawn_fish_human(X, Z) -> void:
 	# Check if the scene is loaded correctly
 	if fish_human_scene == null:
 		printerr("Error: fish_human_scene is not set or loaded!")
@@ -66,11 +67,9 @@ func _spawn_fish_human() -> void:
 		printerr("Error: Failed to instantiate fish_human_scene!")
 		return
 
-	# --- Set Initial Position ---
-	# Calculate a random X position within the defined range
-	var random_x = randf_range(-spawn_x_range, spawn_x_range)
+
 	# Set the initial global position
-	fish_instance.global_position = Vector3(random_x, spawn_y_position, spawn_z_position)
+	fish_instance.global_position = Vector3(X, spawn_y_position, Z)
 
 	# --- Add to Scene and Group ---
 	# Add the instance as a child of this node (the spawner)

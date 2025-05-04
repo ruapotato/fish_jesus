@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bqlw5awm4xtll"]
+[gd_scene load_steps=8 format=3 uid="uid://bqlw5awm4xtll"]
 
 [ext_resource type="Script" path="res://obj/chuckable.gd" id="1_mnyqw"]
 [ext_resource type="Material" uid="uid://c3oidyx0vsp4t" path="res://water.tres" id="2_qfxce"]
@@ -21,6 +21,12 @@ radial_velocity_max = 45.97
 
 [sub_resource type="SphereMesh" id="SphereMesh_1g25n"]
 material = ExtResource("2_qfxce")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7wxbb"]
+height = 1.215
+radius = 0.235
 
 [node name="chuckable" type="Area3D"]
 script = ExtResource("1_mnyqw")
@@ -38,5 +44,11 @@ one_shot = true
 explosiveness = 0.82
 process_material = SubResource("ParticleProcessMaterial_f61wi")
 draw_pass_1 = SubResource("SphereMesh_1g25n")
+
+[node name="kill_zone" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="kill_zone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.51373, 0)
+shape = SubResource("CylinderShape3D_7wxbb")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

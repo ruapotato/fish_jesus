@@ -35,7 +35,7 @@ const CHUCKABLE_SCENE = preload("res://obj/chuckable.tscn")
 
 # Movement constants
 const SPEED: float = 5.0
-const JUMP_VELOCITY: float = 4.5
+const JUMP_VELOCITY: float = 6
 var root
 var water_body
 
@@ -158,23 +158,9 @@ func update_target_position() -> void:
 
 
 func chuck_object() -> void:
-	# Ensure the scene resource loaded correctly
-	if not CHUCKABLE_SCENE:
-		printerr("Chuckable scene resource not found or failed to load! Check the path in CHUCKABLE_SCENE.")
-		return
 
 	# Instantiate the chuckable scene
 	var chuckable_node = CHUCKABLE_SCENE.instantiate()
-
-	# --- Check Instantiation and Type ---
-	if not chuckable_node:
-		printerr("Failed to instantiate chuckable scene. It might be invalid.")
-		return
-	# Ensure the root node of the instantiated scene is an Area3D
-	if not chuckable_node is Area3D:
-		printerr("Chuckable scene's root node is NOT an Area3D! Please ensure '%s' has an Area3D root." % CHUCKABLE_SCENE.resource_path)
-		chuckable_node.queue_free() # Clean up the wrongly instantiated node
-		return
 
 	# Cast to Area3D for clarity
 	var chuckable_area: Area3D = chuckable_node as Area3D

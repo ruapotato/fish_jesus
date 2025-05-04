@@ -6,14 +6,17 @@ extends Area3D # Or CharacterBody3D/Node3D depending on your fish_human scene ro
 @export var depth_offset: float = 0.1
 # Export the Z coordinate for de-spawning
 @export var de_spawn_global_z: float = 100.0
-
+const HUMAN_SCENE = preload("res://obj/human.tscn")
 # Store a reference to the water plane Node3D
 var water_plane: Node3D = null
+
+var root
 
 # Optional: Reference to the visual mesh if you need to rotate it
 # @onready var mesh: Node3D = $MeshInstance3D # Adjust path as needed
 
 func _ready() -> void:
+	root = get_parent()
 	# It's often safer to wait one frame to ensure the node is fully
 	# initialized and positioned within the scene tree by the spawner.
 	await get_tree().process_frame
@@ -82,3 +85,14 @@ func _process(delta: float) -> void:
 	# or distance from the origin projected onto the plane instead.
 	if global_position.z > de_spawn_global_z:
 		queue_free()
+
+
+func hit():
+	print("FISH HIT")
+	var human_node = HUMAN_SCENE.instantiate()
+	human_node.set_deferred("global_position", global_position + Vector3(0,.1,0))
+	root.add_child(human_node)
+	queue_free()
+	
+	
+	
